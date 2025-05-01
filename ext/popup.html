@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VK Message Monitor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 320px;
+      padding: 10px;
+    }
+    
+    h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #4a76a8;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    
+    textarea {
+      height: 60px;
+      resize: vertical;
+    }
+    
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 3px;
+      text-align: center;
+    }
+    
+    .status.active {
+      background-color: #e6f7e6;
+      color: #2e7d32;
+    }
+    
+    .status.inactive {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #4a76a8;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3a5b85;
+    }
+    
+    .btn-danger {
+      background-color: #e53935;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c62828;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    
+    .message {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 3px;
+    }
+    
+    .message.success {
+      background-color: #e6f7e6;
+      color: #2e7d32;
+    }
+    
+    .message.error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .checkbox-group {
+      margin: 10px 0;
+    }
+    
+    .test-sound-btn {
+      margin-left: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .debug-info {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>VK Message Monitor</h1>
+  
+  <div class="form-group">
+    <label for="targetUsers">Target User IDs (comma-separated, empty for all):</label>
+    <input type="text" id="targetUsers" placeholder="e.g., 123456789, 987654321">
+  </div>
+  
+  <div class="form-group">
+    <label for="targetWords">Target Words (comma-separated):</label>
+    <input type="text" id="targetWords" placeholder="e.g., hello, important, urgent">
+  </div>
+  
+  <div class="form-group">
+    <label for="groupResponse">Group Chat Response:</label>
+    <textarea id="groupResponse" placeholder="Message to send in the group chat"></textarea>
+  </div>
+  
+  <div class="form-group">
+    <label for="privateResponse">Private Message Response:</label>
+    <textarea id="privateResponse" placeholder="Message to send privately to the user"></textarea>
+  </div>
+  
+  <div class="checkbox-group">
+    <label>
+      <input type="checkbox" id="playSoundCheck" checked>
+      Play sound on detection
+      <button id="testSoundBtn" class="test-sound-btn">Test</button>
+    </label>
+  </div>
+  
+  <div id="status" class="status inactive">
+    Monitoring is currently OFF
+  </div>
+  
+  <div class="controls">
+    <button id="saveBtn" class="btn btn-primary">Save Settings</button>
+    <button id="toggleBtn" class="btn btn-primary">Start Monitoring</button>
+  </div>
+  
+  <div id="message" class="message" style="display: none;"></div>
+  
+  <div class="debug-info">
+    <p>If monitoring doesn't work, try reloading the VK page.</p>
+    <p>Last scan: <span id="lastScanTime">Never</span></p>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
+    }
+    
+    textarea {
+      height: 60px;
+      resize: vertical;
+    }
+    
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 3px;
+      text-align: center;
+    }
+    
+    .status.active {
+      background-color: #e6f7e6;
+      color: #2e7d32;
+    }
+    
+    .status.inactive {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #4a76a8;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3a5b85;
+    }
+    
+    .btn-danger {
+      background-color: #e53935;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c62828;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    
+    .message {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 3px;
+    }
+    
+    .message.success {
+      background-color: #e6f7e6;
+      color: #2e7d32;
+    }
+    
+    .message.error {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <h1>VK Message Monitor</h1>
+  
+  <div class="form-group">
+    <label for="targetUsers">Target User IDs (comma-separated, empty for all):</label>
+    <input type="text" id="targetUsers" placeholder="e.g., 123456789, 987654321">
+  </div>
+  
+  <div class="form-group">
+    <label for="targetWords">Target Words (comma-separated):</label>
+    <input type="text" id="targetWords" placeholder="e.g., hello, important, urgent">
+  </div>
+  
+  <div class="form-group">
+    <label for="groupResponse">Group Chat Response:</label>
+    <textarea id="groupResponse" placeholder="Message to send in the group chat"></textarea>
+  </div>
+  
+  <div class="form-group">
+    <label for="privateResponse">Private Message Response:</label>
+    <textarea id="privateResponse" placeholder="Message to send privately to the user"></textarea>
+  </div>
+  
+  <div id="status" class="status inactive">
+    Monitoring is currently OFF
+  </div>
+  
+  <div class="controls">
+    <button id="saveBtn" class="btn btn-primary">Save Settings</button>
+    <button id="toggleBtn" class="btn btn-primary">Start Monitoring</button>
+  </div>
+  
+  <div id="message" class="message" style="display: none;"></div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
